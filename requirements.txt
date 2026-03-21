@@ -2,8 +2,8 @@ setuptools>=65.0.0
 wheel>=0.40.0
 fastapi==0.104.1
 uvicorn==0.24.0
-pydantic==2.5.0
-pydantic-settings==2.1.0
+pydantic>=2.7.0
+pydantic-settings>=2.2.0
 python-dotenv==1.0.0
 transformers==4.35.0
 torch==2.10.0
