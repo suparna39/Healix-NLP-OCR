@@ -33,24 +33,26 @@ class MedicalSummarizer(SummarizerBase):
         """
         self.model_name = model_name
         self.pipeline = None
+        self.model = None
+        self.tokenizer = None
         self._load_model()
 
     def _load_model(self) -> None:
         """Load summarization model."""
         try:
-            from transformers import pipeline
+            from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
             logger.info(f"Loading summarization model: {self.model_name}")
-            # Use text2text-generation task which is compatible with FLAN-T5
-            # This is more reliable than the 'summarization' task
-            self.pipeline = pipeline(
-                "text2text-generation",
-                model=self.model_name,
-                device=-1  # Use CPU without additional device_map
-            )
+            # Load model and tokenizer directly instead of using pipeline
+            # This works better with FLAN-T5 and avoids task compatibility issues
+            self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+            self.model = AutoModelForSeq2SeqLM.from_pretrained(self.model_name)
+            self.pipeline = True  # Flag indicating model is loaded
             logger.info("Summarization model loaded successfully")
         except Exception as e:
             logger.error(f"Failed to load summarization model: {e}")
             self.pipeline = None
+            self.tokenizer = None
+            self.model = None
 
     def summarize(
         self,
@@ -69,7 +71,7 @@ class MedicalSummarizer(SummarizerBase):
         Returns:
             Summarized text
         """
-        if not self.pipeline:
+        if not self.pipeline or not self.model or not self.tokenizer:
             logger.warning("Summarizer not loaded, returning truncated text")
             return self._fallback_summary(text, max_length)
 
@@ -81,17 +83,22 @@ class MedicalSummarizer(SummarizerBase):
             if len(text) > 1024:
                 text = text[:1024]
 
-            # Add summarization prefix for FLAN-T5
+            # Prepare input
             input_text = f"summarize: {text}"
-
-            result = self.pipeline(
-                input_text,
+            inputs = self.tokenizer(input_text, max_length=1024, truncation=True, return_tensors="pt")
+            
+            # Generate summary
+            summary_ids = self.model.generate(
+                inputs['input_ids'],
                 max_length=max_length,
                 min_length=min_length,
-                do_sample=False
+                num_beams=4,
+                early_stopping=True
             )
 
-            return result[0]["generated_text"]
+            # Decode summary
+            summary_text = self.tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+            return summary_text
 
         except Exception as e:
             logger.warning(f"Summarization failed: {e}, using fallback")
