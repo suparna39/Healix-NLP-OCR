@@ -40,9 +40,10 @@ class MedicalSummarizer(SummarizerBase):
         try:
             from transformers import pipeline
             logger.info(f"Loading summarization model: {self.model_name}")
-            # Use device=-1 for CPU without device_map to avoid accelerate issues
+            # Use text2text-generation task which is compatible with FLAN-T5
+            # This is more reliable than the 'summarization' task
             self.pipeline = pipeline(
-                "summarization",
+                "text2text-generation",
                 model=self.model_name,
                 device=-1  # Use CPU without additional device_map
             )
@@ -80,14 +81,17 @@ class MedicalSummarizer(SummarizerBase):
             if len(text) > 1024:
                 text = text[:1024]
 
+            # Add summarization prefix for FLAN-T5
+            input_text = f"summarize: {text}"
+
             result = self.pipeline(
-                text,
+                input_text,
                 max_length=max_length,
                 min_length=min_length,
                 do_sample=False
             )
 
-            return result[0]["summary_text"]
+            return result[0]["generated_text"]
 
         except Exception as e:
             logger.warning(f"Summarization failed: {e}, using fallback")
