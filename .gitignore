@@ -49,11 +49,12 @@ logs/
 .cache/
 *.cache
 
-# Models (large files)
+# Models (large files) - but not app/models/ which contains code
 checkpoints/
 models/
 *.bin
 *.pt
+!app/models/
 
 # OS
 .DS_Store
