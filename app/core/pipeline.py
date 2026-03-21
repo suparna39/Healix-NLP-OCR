@@ -84,7 +84,13 @@ class MedicalNLPPipeline:
             )
 
             # Stage 6: Score confidence
-            confidence_scores = self.confidence_scorer.score_all(entities, risks)
+            confidence_scores = self.confidence_scorer.generate_scores(
+                text=merged_text,
+                entities=entities,
+                summary=long_summary,
+                historical_entities=[],
+                integration_text=merged_text
+            )
 
             # Build response
             processing_time = (time.time() - start_time) * 1000
