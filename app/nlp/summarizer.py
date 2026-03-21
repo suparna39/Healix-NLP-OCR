@@ -35,10 +35,12 @@ class MedicalSummarizer(SummarizerBase):
         self.pipeline = None
         self.model = None
         self.tokenizer = None
-        self._load_model()
+        self.model_loaded = False
+        # Don't load on init - lazy load on first use
+        logger.info(f"Summarizer initialized (lazy loading: {model_name})")
 
     def _load_model(self) -> None:
-        """Load summarization model."""
+        """Load summarization model (lazy loading)."""
         try:
             from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
             logger.info(f"Loading summarization model: {self.model_name}")
@@ -47,12 +49,14 @@ class MedicalSummarizer(SummarizerBase):
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
             self.model = AutoModelForSeq2SeqLM.from_pretrained(self.model_name)
             self.pipeline = True  # Flag indicating model is loaded
+            self.model_loaded = True
             logger.info("Summarization model loaded successfully")
         except Exception as e:
             logger.error(f"Failed to load summarization model: {e}")
             self.pipeline = None
             self.tokenizer = None
             self.model = None
+            self.model_loaded = False
 
     def summarize(
         self,
@@ -71,6 +75,10 @@ class MedicalSummarizer(SummarizerBase):
         Returns:
             Summarized text
         """
+        # Lazy load model on first use
+        if not self.model_loaded:
+            self._load_model()
+        
         if not self.pipeline or not self.model or not self.tokenizer:
             logger.warning("Summarizer not loaded, returning truncated text")
             return self._fallback_summary(text, max_length)
