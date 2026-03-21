@@ -1,0 +1,9 @@
+{
+  "ocr_text": "PATIENT MEDICAL RECORD\nDate: 2024-03-20\nPatient ID: P12345\n\nCHIEF COMPLAINT:\nPatient presents with chest pain and shortness of breath for 3 days.\n\nHISTORY OF PRESENT ILLNESS:\nThe patient is a 65-year-old male with history of hypertension and diabetes mellitus who reports experiencing chest pain radiating to the left arm. Associated symptoms include shortness of breath, nausea, and diaphoresis. Patient denies recent trauma.\n\nPAST MEDICAL HISTORY:\n- Hypertension (HTN) - diagnosed 10 years ago\n- Type 2 Diabetes Mellitus (T2DM) - diagnosed 8 years ago\n- Coronary Artery Disease (CAD)\n\nMEDICATIONS:\n- Lisinopril 10mg daily\n- Metformin 1000mg twice daily\n- Atorvastatin 40mg daily\n- Aspirin 81mg daily\n\nVITAL SIGNS:\n- BP: 150/95 mmHg\n- HR: 102 bpm\n- Temperature: 37.2°C\n- SpO2: 94%\n\nLABORATORY RESULTS:\n- Blood glucose: 280 mg/dL\n- HbA1c: 8.5%\n- Troponin I: 0.08 ng/mL (elevated)\n- BUN: 25 mg/dL\n\nIMAGING:\n- ECG: ST elevation in leads II, III, aVF\n- Chest X-ray: No acute findings\n\nASSESSMENT:\nAcute Myocardial Infarction (STEMI) - Inferior wall",
+  "patient_id": "P12345",
+  "age": 65,
+  "sex": "M",
+  "source_type": "emergency_department",
+  "known_conditions": ["hypertension", "diabetes mellitus", "coronary artery disease"],
+  "previous_records": null
+}

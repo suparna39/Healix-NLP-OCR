@@ -1,0 +1,237 @@
+{
+  "patient_id": "P12345",
+  "entities": {
+    "diseases": [
+      {
+        "text": "Myocardial Infarction",
+        "entity_type": "disease",
+        "normalized": "Myocardial Infarction",
+        "confidence": 0.92,
+        "start_pos": 845,
+        "end_pos": 866,
+        "explanation": "Elevated troponin (0.08 ng/mL) and ST elevation on ECG indicate acute MI",
+        "synonyms": ["mi", "heart attack", "acute mi"],
+        "cui": null
+      },
+      {
+        "text": "hypertension",
+        "entity_type": "disease",
+        "normalized": "Hypertension",
+        "confidence": 0.88,
+        "start_pos": 89,
+        "end_pos": 101,
+        "explanation": "Known hypertension with elevated BP 150/95 mmHg",
+        "synonyms": ["high blood pressure", "htn"],
+        "cui": null
+      },
+      {
+        "text": "diabetes mellitus",
+        "entity_type": "disease",
+        "normalized": "Diabetes Mellitus",
+        "confidence": 0.90,
+        "start_pos": 127,
+        "end_pos": 143,
+        "explanation": "Type 2 diabetes with elevated glucose 280 mg/dL and HbA1c 8.5%",
+        "synonyms": ["dm", "t2dm", "type 2 diabetes"],
+        "cui": null
+      }
+    ],
+    "symptoms": [
+      {
+        "text": "chest pain",
+        "entity_type": "symptom",
+        "normalized": "Chest Pain",
+        "confidence": 0.95,
+        "start_pos": 145,
+        "end_pos": 155,
+        "explanation": "Chief complaint - radiating to left arm",
+        "synonyms": ["chest discomfort", "angina"],
+        "cui": null
+      },
+      {
+        "text": "shortness of breath",
+        "entity_type": "symptom",
+        "normalized": "Dyspnea",
+        "confidence": 0.93,
+        "start_pos": 160,
+        "end_pos": 179,
+        "explanation": "Associated symptom of acute MI",
+        "synonyms": ["dyspnea", "sob", "breathlessness"],
+        "cui": null
+      },
+      {
+        "text": "nausea",
+        "entity_type": "symptom",
+        "normalized": "Nausea",
+        "confidence": 0.85,
+        "start_pos": 240,
+        "end_pos": 246,
+        "explanation": "Symptom of acute coronary event",
+        "synonyms": [],
+        "cui": null
+      }
+    ],
+    "medications": [
+      {
+        "text": "Lisinopril",
+        "entity_type": "medication",
+        "normalized": "Lisinopril",
+        "confidence": 0.92,
+        "start_pos": 285,
+        "end_pos": 295,
+        "explanation": "ACE inhibitor for hypertension management",
+        "synonyms": ["zestril", "prinivil"],
+        "cui": null
+      },
+      {
+        "text": "Metformin",
+        "entity_type": "medication",
+        "normalized": "Metformin",
+        "confidence": 0.94,
+        "start_pos": 310,
+        "end_pos": 319,
+        "explanation": "First-line agent for diabetes control",
+        "synonyms": ["glucophage"],
+        "cui": null
+      },
+      {
+        "text": "Atorvastatin",
+        "entity_type": "medication",
+        "normalized": "Atorvastatin",
+        "confidence": 0.90,
+        "start_pos": 340,
+        "end_pos": 352,
+        "explanation": "Statin for cardiovascular risk reduction",
+        "synonyms": ["lipitor"],
+        "cui": null
+      },
+      {
+        "text": "Aspirin",
+        "entity_type": "medication",
+        "normalized": "Aspirin",
+        "confidence": 0.93,
+        "start_pos": 365,
+        "end_pos": 372,
+        "explanation": "Antiplatelet therapy for coronary disease",
+        "synonyms": ["asa"],
+        "cui": null
+      }
+    ],
+    "tests": [
+      {
+        "text": "ECG",
+        "entity_type": "test",
+        "normalized": "Electrocardiogram",
+        "confidence": 0.95,
+        "start_pos": 680,
+        "end_pos": 683,
+        "explanation": "Cardiac electrical activity showing ST elevation",
+        "synonyms": ["ekg"],
+        "cui": null
+      },
+      {
+        "text": "Chest X-ray",
+        "entity_type": "test",
+        "normalized": "Radiography",
+        "confidence": 0.90,
+        "start_pos": 725,
+        "end_pos": 736,
+        "explanation": "Imaging to rule out pulmonary pathology",
+        "synonyms": ["cxr", "chest radiograph"],
+        "cui": null
+      }
+    ],
+    "procedures": [],
+    "measurements": [
+      {
+        "text": "BP: 150/95 mmHg",
+        "entity_type": "measurement",
+        "normalized": null,
+        "confidence": 0.88,
+        "start_pos": 550,
+        "end_pos": 565,
+        "explanation": "Elevated blood pressure consistent with hypertensive emergency",
+        "synonyms": [],
+        "cui": null
+      },
+      {
+        "text": "glucose: 280 mg/dL",
+        "entity_type": "measurement",
+        "normalized": null,
+        "confidence": 0.92,
+        "start_pos": 615,
+        "end_pos": 633,
+        "explanation": "Significantly elevated blood glucose",
+        "synonyms": [],
+        "cui": null
+      }
+    ],
+    "anatomy": []
+  },
+  "normalized_terms": {
+    "Myocardial Infarction": "Myocardial Infarction",
+    "hypertension": "Hypertension",
+    "diabetes mellitus": "Diabetes Mellitus",
+    "chest pain": "Chest Pain",
+    "shortness of breath": "Dyspnea",
+    "Lisinopril": "Lisinopril",
+    "Metformin": "Metformin"
+  },
+  "summary_short": "65-year-old male with history of hypertension and diabetes presenting with acute inferior STEMI complicated by elevated glucose and multiple cardiac risk factors.",
+  "summary_long": "Patient is a 65-year-old male with significant cardiac risk factors including hypertension (BP 150/95), diabetes mellitus (glucose 280, HbA1c 8.5%), and known coronary artery disease. He presents with acute chest pain radiating to the left arm, associated with dyspnea, nausea, and diaphoresis. ECG demonstrates ST elevation in inferior leads (II, III, aVF) consistent with acute inferior myocardial infarction. Elevated troponin I (0.08 ng/mL) confirms myocardial necrosis. Patient is currently on appropriate medications including lisinopril, metformin, atorvastatin, and aspirin. Requires urgent cardiac catheterization and revascularization.",
+  "history_integration": "No previous records provided. Current presentation represents acute decompensation from stable chronic disease state.",
+  "risk_flags": [
+    {
+      "flag_type": "critical_disease",
+      "severity": "critical",
+      "description": "Critical condition detected: Myocardial Infarction",
+      "explanation": "Acute inferior STEMI with ST elevation on ECG and elevated cardiac biomarkers indicating myocardial necrosis requiring immediate revascularization",
+      "entities_involved": ["Myocardial Infarction"],
+      "recommended_action": "Urgent cardiac catheterization and percutaneous coronary intervention (PCI)"
+    },
+    {
+      "flag_type": "critical_symptom",
+      "severity": "critical",
+      "description": "Critical symptom: chest pain",
+      "explanation": "Acute chest pain in setting of known CAD requires urgent evaluation",
+      "entities_involved": ["chest pain"],
+      "recommended_action": "Seek emergency care immediately"
+    },
+    {
+      "flag_type": "medication_interaction",
+      "severity": "high",
+      "description": "Potential interaction: aspirin + lisinopril",
+      "explanation": "ACE inhibitor with antiplatelet therapy increases bleeding risk but appropriate in ACS",
+      "entities_involved": ["aspirin", "lisinopril"],
+      "recommended_action": "Monitor for bleeding, appropriate in acute MI setting"
+    },
+    {
+      "flag_type": "abnormal_value",
+      "severity": "high",
+      "description": "Abnormal lab value: troponin 0.08 ng/mL",
+      "explanation": "Elevated troponin confirms myocardial injury",
+      "entities_involved": ["troponin 0.08 ng/mL"],
+      "recommended_action": "Serial troponin measurements and echocardiography"
+    }
+  ],
+  "confidence": {
+    "entity_extraction": 0.90,
+    "summarization": 0.87,
+    "context_understanding": 0.65,
+    "overall": 0.84
+  },
+  "notes_for_doctor": [
+    "⚠️ ALERT: Critical condition detected: Myocardial Infarction",
+    "⚠️ ALERT: Critical symptom: chest pain",
+    "Patient on 4 documented medications - verify compliance in acute setting",
+    "Monitor ongoing conditions: hypertension, diabetes mellitus",
+    "Follow up on abnormal lab values"
+  ],
+  "warnings": [],
+  "processing_time_ms": 312.45,
+  "model_versions": {
+    "entity_extractor": "scispacy-0.5.0 + custom rules",
+    "summarization": "google/flan-t5-base",
+    "system_version": "1.0.0"
+  }
+}
