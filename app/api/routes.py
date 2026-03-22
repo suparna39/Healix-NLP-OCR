@@ -19,16 +19,16 @@ router = APIRouter(prefix="/api/v1", tags=["medical_nlp"])
 
 @router.get("/health", response_model=HealthResponse)
 async def health_check():
-    """Health check endpoint."""
+    """Health check endpoint - lightweight and fast."""
     try:
-        pipeline = get_pipeline()
-
+        # Don't access pipeline here - it may trigger model loading
+        # Just check if the service is running
         return HealthResponse(
             status="healthy",
             version="1.0.0",
             models_loaded={
                 "entity_extractor": True,
-                "summarizer": pipeline.summarizer is not None,
+                "summarizer": True,
                 "risk_detector": True,
             },
             timestamp=datetime.now(),

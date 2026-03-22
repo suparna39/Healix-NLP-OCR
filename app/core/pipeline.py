@@ -22,20 +22,45 @@ class MedicalNLPPipeline:
 
     def __init__(self):
         """Initialize all pipeline components."""
-        logger.info("Initializing HELIX Medical NLP Pipeline")
-        self.text_cleaner = OCRTextCleaner()
-        self.entity_extractor = MedicalEntityExtractor(use_scispacy=settings.USE_SCISPACY)
-        self.term_normalizer = MedicalTermNormalizer()
-        self.context_merger = ContextMerger()
-        self.summarizer = create_summarizer(settings.SUMMARIZATION_MODEL)
-        self.risk_detector = RiskDetector()
-        self.confidence_scorer = ConfidenceScorer()
-        self.model_versions = {
-            "entity_extractor": "pattern-based + optional scispacy",
-            "summarization": settings.SUMMARIZATION_MODEL or "rule-based fallback",
-            "system_version": "1.0.0",
-        }
-        logger.info("Pipeline initialized successfully")
+        try:
+            logger.info("Initializing HELIX Medical NLP Pipeline")
+            logger.info("Initializing OCR text cleaner...")
+            self.text_cleaner = OCRTextCleaner()
+            logger.info("Text cleaner initialized")
+            
+            logger.info("Initializing entity extractor...")
+            self.entity_extractor = MedicalEntityExtractor(use_scispacy=settings.USE_SCISPACY)
+            logger.info("Entity extractor initialized")
+            
+            logger.info("Initializing term normalizer...")
+            self.term_normalizer = MedicalTermNormalizer()
+            logger.info("Term normalizer initialized")
+            
+            logger.info("Initializing context merger...")
+            self.context_merger = ContextMerger()
+            logger.info("Context merger initialized")
+            
+            logger.info(f"Initializing summarizer with model: {settings.SUMMARIZATION_MODEL}")
+            self.summarizer = create_summarizer(settings.SUMMARIZATION_MODEL)
+            logger.info("Summarizer initialized")
+            
+            logger.info("Initializing risk detector...")
+            self.risk_detector = RiskDetector()
+            logger.info("Risk detector initialized")
+            
+            logger.info("Initializing confidence scorer...")
+            self.confidence_scorer = ConfidenceScorer()
+            logger.info("Confidence scorer initialized")
+            
+            self.model_versions = {
+                "entity_extractor": "pattern-based + optional scispacy",
+                "summarization": settings.SUMMARIZATION_MODEL or "rule-based fallback",
+                "system_version": "1.0.0",
+            }
+            logger.info("Pipeline initialized successfully")
+        except Exception as e:
+            logger.critical(f"Failed to initialize pipeline: {e}", exc_info=True)
+            raise
 
     def process(self, request: AnalysisRequest) -> AnalysisResponse:
         """Main processing method."""

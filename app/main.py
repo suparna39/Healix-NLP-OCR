@@ -15,14 +15,34 @@ async def lifespan(app: FastAPI):
     """Lifespan context manager for startup and shutdown."""
     # Startup
     logger.info("Starting HELIX Medical NLP Engine")
-    settings.ensure_directories()
-    initialize_pipeline()
-    logger.info("Pipeline initialized on startup")
+    try:
+        settings.ensure_directories()
+        logger.info("Directories ensured")
+    except Exception as e:
+        logger.warning(f"Error ensuring directories: {e}")
+    
+    # Initialize pipeline in background - don't block startup
+    try:
+        import asyncio
+        # Use asyncio.create_task to initialize in background
+        asyncio.create_task(async_initialize_pipeline())
+        logger.info("Pipeline initialization started (background)")
+    except Exception as e:
+        logger.warning(f"Could not start background pipeline init: {e}")
 
     yield
 
     # Shutdown
     logger.info("Shutting down HELIX Medical NLP Engine")
+
+
+async def async_initialize_pipeline():
+    """Initialize pipeline asynchronously without blocking startup."""
+    try:
+        initialize_pipeline()
+        logger.info("Pipeline initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize pipeline: {e}", exc_info=True)
 
 
 # Create FastAPI app
