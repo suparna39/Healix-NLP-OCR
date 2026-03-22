@@ -21,7 +21,7 @@ class Settings:
     SCISPACY_MODEL: str = "en_core_sci_md"
     USE_BIOBERT: bool = True
 
-    # Summarization Model
+    # Summarization Model - Uses lazy loading for efficient memory usage on Render free tier
     _model_env = os.getenv("SUMMARIZATION_MODEL", "default")
     SUMMARIZATION_MODEL: Optional[str] = None if _model_env == "default" else _model_env
     MAX_SUMMARY_LENGTH: int = 150
