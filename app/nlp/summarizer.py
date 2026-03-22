@@ -234,17 +234,33 @@ class SimpleRuleSummarizer(SummarizerBase):
 
 
 def create_summarizer(model_name: Optional[str] = None) -> SummarizerBase:
-    """Factory function to create appropriate summarizer."""
-    if model_name:
+    """Factory function to create appropriate summarizer.
+    
+    On Render free tier, defaults to rule-based summarizer to avoid memory exhaustion.
+    Set SUMMARIZATION_MODEL=flan-t5-base to use transformer (requires more resources).
+    """
+    import os
+    
+    # Check if we're on Render (has RENDER env var)
+    on_render = os.getenv("RENDER", "false").lower() == "true"
+    
+    if model_name and model_name != "default":
         try:
+            logger.info(f"Attempting to load transformer model: {model_name}")
             return MedicalSummarizer(model_name)
         except Exception as e:
             logger.warning(f"Failed to load {model_name}, using fallback: {e}")
             return SimpleRuleSummarizer()
-    else:
-        # Try default, fall back if needed
-        try:
-            return MedicalSummarizer("google/flan-t5-base")
-        except Exception as e:
-            logger.warning(f"Failed to load default summarizer, using fallback: {e}")
-            return SimpleRuleSummarizer()
+    
+    # On Render, use lightweight rule-based by default
+    if on_render:
+        logger.info("Running on Render - using lightweight rule-based summarizer")
+        return SimpleRuleSummarizer()
+    
+    # Locally, try to use transformer with fallback
+    try:
+        logger.info("Using default FLAN-T5 transformer summarizer")
+        return MedicalSummarizer("google/flan-t5-base")
+    except Exception as e:
+        logger.warning(f"Failed to load default summarizer, using fallback: {e}")
+        return SimpleRuleSummarizer()
