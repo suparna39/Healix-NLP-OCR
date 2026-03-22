@@ -26,7 +26,7 @@ class MedicalSummarizer(SummarizerBase):
 
     def __init__(self, model_name: str = "google/flan-t5-base"):
         """
-        Initialize summarizer with a pretrained model.
+        Initialize summarizer with lazy loading.
 
         Args:
             model_name: Hugging Face model identifier
@@ -35,24 +35,30 @@ class MedicalSummarizer(SummarizerBase):
         self.pipeline = None
         self.model = None
         self.tokenizer = None
-        self._load_model()
+        self._model_loaded = False
+        # Don't load model on init - defer until first use
 
     def _load_model(self) -> None:
-        """Load summarization model."""
+        """Lazy load summarization model on first use."""
+        if self._model_loaded:
+            return
+        
         try:
             from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-            logger.info(f"Loading summarization model: {self.model_name}")
+            logger.info(f"Lazy loading summarization model: {self.model_name}")
             # Load model and tokenizer directly instead of using pipeline
             # This works better with FLAN-T5 and avoids task compatibility issues
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
             self.model = AutoModelForSeq2SeqLM.from_pretrained(self.model_name)
             self.pipeline = True  # Flag indicating model is loaded
+            self._model_loaded = True
             logger.info("Summarization model loaded successfully")
         except Exception as e:
             logger.error(f"Failed to load summarization model: {e}")
             self.pipeline = None
             self.tokenizer = None
             self.model = None
+            self._model_loaded = True  # Mark as attempted even if failed
 
     def summarize(
         self,
@@ -71,6 +77,9 @@ class MedicalSummarizer(SummarizerBase):
         Returns:
             Summarized text
         """
+        # Lazy load model on first use
+        self._load_model()
+        
         if not self.pipeline or not self.model or not self.tokenizer:
             logger.warning("Summarizer not loaded, returning truncated text")
             return self._fallback_summary(text, max_length)
