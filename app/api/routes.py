@@ -152,20 +152,34 @@ async def extract_entities(request: ExtractRequest) -> dict:
         # Clean text
         cleaned_text = pipeline.text_cleaner.clean(request.text)
 
-        # Extract entities
-        entities_by_type = pipeline.extract_entities(cleaned_text)
+        # Extract entities directly
+        entities = pipeline.entity_extractor.extract(cleaned_text)
+        
+        # Normalize entities
+        entities = pipeline.term_normalizer.normalize_entities(entities)
+
+        # Group by type
+        entities_by_type = {
+            "diseases": [e for e in entities if e.entity_type == "disease"],
+            "symptoms": [e for e in entities if e.entity_type == "symptom"],
+            "medications": [e for e in entities if e.entity_type == "medication"],
+            "tests": [e for e in entities if e.entity_type == "test"],
+            "procedures": [e for e in entities if e.entity_type == "procedure"],
+            "measurements": [e for e in entities if e.entity_type == "measurement"],
+            "anatomy": [e for e in entities if e.entity_type == "anatomy"],
+        }
 
         # Convert to JSON-serializable format
         result = {}
-        for entity_type, entities in entities_by_type.items():
+        for entity_type, entities_list in entities_by_type.items():
             result[entity_type] = [
                 {
                     "text": e.text,
                     "normalized": e.normalized,
                     "confidence": e.confidence,
-                    "synonyms": e.synonyms,
+                    "synonyms": e.synonyms if hasattr(e, 'synonyms') else [],
                 }
-                for e in entities
+                for e in entities_list
             ]
 
         logger.info(f"Entity extraction completed: {sum(len(v) for v in result.values())} entities")
