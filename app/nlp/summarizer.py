@@ -231,6 +231,17 @@ class SimpleRuleSummarizer(SummarizerBase):
     def summarize_hierarchical(self, text: str, chunk_size: int = 500) -> str:
         """Fallback hierarchical summarization."""
         return self.summarize(text, max_length=200, min_length=80)
+    
+    def generate_short_summary(self, text: str) -> str:
+        """Generate brief clinical summary (1-2 sentences)."""
+        return self.summarize(text, max_length=80, min_length=30)
+
+    def generate_long_summary(self, text: str) -> str:
+        """Generate comprehensive summary."""
+        if len(text) > 1500:
+            return self.summarize_hierarchical(text, chunk_size=500)
+        else:
+            return self.summarize(text, max_length=150, min_length=50)
 
 
 def create_summarizer(model_name: Optional[str] = None) -> SummarizerBase:
